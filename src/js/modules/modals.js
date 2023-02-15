@@ -56,7 +56,7 @@ const openByScroll = (selectorModal, triggerSelector) => {
            document.querySelector(triggerSelector).remove();
            /* document.querySelector(selectorModal).click(); */
         }
-    });
+    }, {once: true});
 };
 
 const modal = (modalSelector, triggerSelector,  destroy = false) => {

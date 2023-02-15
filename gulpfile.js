@@ -5,6 +5,7 @@ const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
 
 const dist = "./dist/";
+/* const dist = "D:/app/OpenServer/domains/practice/JS/Source(practice2)/dist"; */ // Тут адрес к вашему серверу
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
