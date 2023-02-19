@@ -20,5 +20,29 @@
             "title": "Шарж",
             "link": "#sharj"
         }
+    ],
+    "price": [
+        {
+            "40x50": "500",
+            "50x70": "800", 
+            "70x70": "1200",
+            "70x100": "1500"
+        },
+        {          
+            "fiber": "1",
+            "linen": "1.2",
+            "cotton": "1.5"
+        },
+        {
+            "art-gel": "600",
+            "express-production": "1000",
+            "delivery": "500"
+        }
+    ],
+    "promocode": [
+        {
+            "IWANTPOPART": "0.7",
+            "SECRET": "0.1"
+        }
     ]
 }

@@ -58,7 +58,13 @@ const forms = (formSelector) => {
             statusMessage.prepend(messageImg);
 
             const formData = new FormData(form);
+            if (form.getAttribute("data-calc") === '') { 
+                const resultBlock = document.querySelector('.calc-price');
+
+                formData.append("result", resultBlock.textContent);
+            }
             /* const json = JSON.stringify(Object.fromEntries(formData.entries())); */
+
             let api = form.closest('.popup-design') || form.classList.contains('calc_form') ? path.designer : path.question;
             console.log(api);
 
