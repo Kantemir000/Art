@@ -4438,7 +4438,7 @@ window.addEventListener("DOMContentLoaded", function () {
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["openByScroll"])(".popup-gift", ".fixed-gift");
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".feedback-slider-item", "horizontal", ".main-prev-btn", ".main-next-btn");
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".main-slider-item", "vertical");
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])("form");
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])("form:not([data-post='instant'])");
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
@@ -4641,10 +4641,21 @@ var checkTextInputs = function checkTextInputs(selector) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.function.name */ "./node_modules/core-js/modules/es.function.name.js");
 /* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.split */ "./node_modules/core-js/modules/es.string.split.js");
-/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.promise.finally */ "./node_modules/core-js/modules/es.promise.finally.js");
+/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.string.split */ "./node_modules/core-js/modules/es.string.split.js");
+/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+
+
+
+
 
 
 
@@ -4663,6 +4674,32 @@ var drop = function drop() {
 
   var unhighlite = function unhighlite(input) {
     input.closest('.file_upload').firstElementChild.classList.remove("animated", "flash");
+  };
+
+  var postImg = function postImg(e, input) {
+    if (e.dataTransfer) {
+      input.files = e.dataTransfer.files;
+    }
+
+    var arr = input.files[0].name.split('.');
+    var dots = arr[0].lenght > 6 ? '...' : '.';
+    var name = arr[0].substring(0, 7) + dots + arr[1];
+    input.previousElementSibling.textContent = name;
+
+    if (input.closest('form').getAttribute('data-post') === 'instant') {
+      var formData = new FormData(input.closest('form'));
+      Object(_services_requests__WEBPACK_IMPORTED_MODULE_6__["postData"])("assets/server.php", formData).then(function (res) {
+        console.log(res);
+        input.previousElementSibling.textContent = 'Пожалуйста, свяжитесь с нами!';
+      }).catch(function (error) {
+        console.log(error);
+        input.previousElementSibling.textContent = 'Ошибка';
+      }).finally(function () {
+        setTimeout(function () {
+          input.previousElementSibling.textContent = 'Файл не выбран';
+        }, 5000);
+      });
+    }
   };
 
   ['dragenter', 'dragleave', 'dragover', 'drop'].forEach(function (eventName) {
@@ -4684,13 +4721,11 @@ var drop = function drop() {
       });
     });
   });
-  fileInputs.forEach(function (input) {
-    input.addEventListener('drop', function (e) {
-      input.files = e.dataTransfer.files;
-      var arr = input.files[0].name.split('.');
-      var dots = arr[0].lenght > 6 ? '...' : '.';
-      var name = arr[0].substring(0, 7) + dots + arr[1];
-      input.previousElementSibling.textContent = name;
+  ['drop', 'input'].forEach(function (eventName) {
+    fileInputs.forEach(function (input) {
+      input.addEventListener(eventName, function (e) {
+        return postImg(e, input);
+      });
     });
   });
 };

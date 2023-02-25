@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", () => {
     openByScroll(".popup-gift", ".fixed-gift");
     sliders(".feedback-slider-item", "horizontal", ".main-prev-btn", ".main-next-btn");
     sliders(".main-slider-item", "vertical");
-    forms("form");
+    forms("form:not([data-post='instant'])");
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
     checkTextInputs('[name="message"]');

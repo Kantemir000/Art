@@ -1275,10 +1275,11 @@ h4 {
 }
 .status {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
+.status img{
+  width: 20%;
+}
+
 .pageup {
   opacity: 0;
   width: 26px ;
